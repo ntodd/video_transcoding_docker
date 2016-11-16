@@ -10,14 +10,14 @@ You must be running [Docker for Mac](https://docs.docker.com/engine/installation
 
 ## Usage
 
-To run the video_transcoding gem in docker, execute the following command:
+To run the video_transcoding gem in Docker, execute the following command:
 
 ```
 docker run -itv `pwd`:/data ntodd/video-transcoding /bin/bash
 ```
 
 This will:
-1. Download the `ntodd/video-transcoding` docker image (unless already downloaded)
+1. Download the `ntodd/video-transcoding` Docker image (unless already downloaded)
 2. Mount the current working directory on your host machine as a shared volume inside the container
 3. Run an interactive bash shell with access to your current directory and the video_transcoding cli tools
 
