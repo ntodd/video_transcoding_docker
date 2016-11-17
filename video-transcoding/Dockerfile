@@ -1,3 +1,5 @@
+# ntodd/video-transcoding:0.12.2
+
 FROM ntodd/ruby-xenial:2.3.1
 MAINTAINER Nate Todd
 
@@ -10,7 +12,7 @@ RUN apt-get update -qq && apt-get install -y \
   handbrake-cli
 
 # Install video_transcoding gem
-RUN gem install video_transcoding
+RUN gem install video_transcoding -v 0.12.2
 
 # Set work directory
 RUN mkdir /data
