@@ -17,3 +17,5 @@ RUN gem install video_transcoding -v 0.12.3
 # Set work directory
 RUN mkdir /data
 WORKDIR /data
+
+CMD [ "/bin/bash" ]
