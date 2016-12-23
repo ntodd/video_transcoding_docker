@@ -14,10 +14,10 @@ To run the video_transcoding gem in Docker, execute the following:
 
 ```
 # Docker for Mac & Linux
-docker run -itv `pwd`:/data ntodd/video-transcoding /bin/bash
+docker run -itv "`pwd`":/data ntodd/video-transcoding
 
 # Docker for Windows
-docker run -itv C:\My\Current\Path:/data ntodd/video-transcoding /bin/bash
+docker run -itv C:\My\Current\Path:/data ntodd/video-transcoding
 ```
 
 This will:
@@ -27,3 +27,9 @@ This will:
 3. Run an interactive bash shell with access to your current directory and the video_transcoding cli tools
 
 For best results on Docker for Mac or Windows, set your CPU count in preferences to the maximum available for your machine.
+
+To update to the latest version:
+
+```
+docker pull ntodd/video-transcoding:latest
+```
