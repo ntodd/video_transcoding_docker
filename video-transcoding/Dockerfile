@@ -3,6 +3,9 @@
 FROM ntodd/ruby-xenial:2.3.1
 MAINTAINER Nate Todd
 
+RUN apt-get update -qq && apt-get install -y software-properties-common
+RUN add-apt-repository ppa:stebbins/handbrake-releases
+
 # Install dependencies
 RUN apt-get update -qq && apt-get install -y \
   ffmpeg \
