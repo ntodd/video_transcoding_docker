@@ -1,7 +1,19 @@
-# ntodd/ruby-xenial:2.3.1
+# ntodd/ruby-xenial:2.4.0
 
-FROM buildpack-deps:xenial
+FROM ubuntu:xenial
 MAINTAINER Nate Todd
+
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends \
+		bzip2 \
+		ca-certificates \
+		libffi-dev \
+		libgdbm3 \
+		libssl-dev \
+		libyaml-dev \
+		procps \
+		zlib1g-dev \
+	&& rm -rf /var/lib/apt/lists/*
 
 # skip installing gem documentation
 RUN mkdir -p /usr/local/etc \
@@ -12,7 +24,7 @@ RUN mkdir -p /usr/local/etc \
 
 ENV RUBY_MAJOR 2.4
 ENV RUBY_VERSION 2.4.0
-ENV RUBY_DOWNLOAD_SHA256 152fd0bd15a90b4a18213448f485d4b53e9f7662e1508190aa5b702446b29e3d
+ENV RUBY_DOWNLOAD_SHA256 3a87fef45cba48b9322236be60c455c13fd4220184ce7287600361319bb63690
 ENV RUBYGEMS_VERSION 2.6.10
 
 # some of ruby's build scripts are written in ruby
@@ -20,20 +32,31 @@ ENV RUBYGEMS_VERSION 2.6.10
 RUN set -ex \
 	\
 	&& buildDeps=' \
+		autoconf \
 		bison \
+		gcc \
+		libbz2-dev \
 		libgdbm-dev \
+		libglib2.0-dev \
+		libncurses-dev \
+		libreadline-dev \
+		libxml2-dev \
+		libxslt-dev \
+		make \
 		ruby \
+		wget \
+		xz-utils \
 	' \
 	&& apt-get update \
 	&& apt-get install -y --no-install-recommends $buildDeps \
 	&& rm -rf /var/lib/apt/lists/* \
 	\
-	&& wget -O ruby.tar.gz "https://cache.ruby-lang.org/pub/ruby/$RUBY_MAJOR/ruby-$RUBY_VERSION.tar.gz" \
-	&& echo "$RUBY_DOWNLOAD_SHA256 *ruby.tar.gz" | sha256sum -c - \
+	&& wget -O ruby.tar.xz "https://cache.ruby-lang.org/pub/ruby/${RUBY_MAJOR%-rc}/ruby-$RUBY_VERSION.tar.xz" \
+	&& echo "$RUBY_DOWNLOAD_SHA256 *ruby.tar.xz" | sha256sum -c - \
 	\
 	&& mkdir -p /usr/src/ruby \
-	&& tar -xzf ruby.tar.gz -C /usr/src/ruby --strip-components=1 \
-	&& rm ruby.tar.gz \
+	&& tar -xJf ruby.tar.xz -C /usr/src/ruby --strip-components=1 \
+	&& rm ruby.tar.xz \
 	\
 	&& cd /usr/src/ruby \
 	\
@@ -47,7 +70,7 @@ RUN set -ex \
 	&& mv file.c.new file.c \
 	\
 	&& autoconf \
-	&& ./configure --disable-install-doc \
+	&& ./configure --disable-install-doc --enable-shared \
 	&& make -j"$(nproc)" \
 	&& make install \
 	\
@@ -57,7 +80,7 @@ RUN set -ex \
 	\
 	&& gem update --system "$RUBYGEMS_VERSION"
 
-ENV BUNDLER_VERSION 1.13.6
+ENV BUNDLER_VERSION 1.14.3
 
 RUN gem install bundler --version "$BUNDLER_VERSION"
 
