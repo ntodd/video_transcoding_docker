@@ -1,9 +1,9 @@
-# ntodd/video-transcoding:0.16.0
+# ntodd/video-transcoding:0.17.0
 
 FROM ntodd/ruby-xenial:2.4.0
 MAINTAINER Nate Todd
 
-ENV GEM_VERSION 0.16.0
+ENV GEM_VERSION 0.17.0
 
 RUN set -ex \
   && apt-get update -qq && apt-get install -y --no-install-recommends software-properties-common \
@@ -13,7 +13,7 @@ RUN set -ex \
     ffmpeg \
     mkvtoolnix \
     mp4v2-utils \
-    mplayer \
+    mpv \
     handbrake-cli \
   && apt-get remove -y software-properties-common && apt-get autoremove -y \
   && rm -rf /var/lib/apt/lists/* \
