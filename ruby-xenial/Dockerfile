@@ -1,4 +1,4 @@
-# ntodd/ruby-xenial:2.4.0
+# ntodd/ruby-xenial:2.4.1
 
 FROM ubuntu:xenial
 MAINTAINER Nate Todd
@@ -23,9 +23,10 @@ RUN mkdir -p /usr/local/etc \
 	} >> /usr/local/etc/gemrc
 
 ENV RUBY_MAJOR 2.4
-ENV RUBY_VERSION 2.4.0
-ENV RUBY_DOWNLOAD_SHA256 3a87fef45cba48b9322236be60c455c13fd4220184ce7287600361319bb63690
-ENV RUBYGEMS_VERSION 2.6.10
+ENV RUBY_VERSION 2.4.1
+ENV RUBY_DOWNLOAD_SHA256 a330e10d5cb5e53b3a0078326c5731888bb55e32c4abfeb27d9e7f8e5d000250
+ENV RUBYGEMS_VERSION 2.6.12
+ENV BUNDLER_VERSION 1.14.6
 
 # some of ruby's build scripts are written in ruby
 #   we purge system ruby later to make sure our final image uses what we just built
@@ -79,8 +80,6 @@ RUN set -ex \
 	&& rm -r /usr/src/ruby \
 	\
 	&& gem update --system "$RUBYGEMS_VERSION"
-
-ENV BUNDLER_VERSION 1.14.3
 
 RUN gem install bundler --version "$BUNDLER_VERSION"
 
