@@ -1,9 +1,9 @@
-# ntodd/video-transcoding:0.17.2
+# ntodd/video-transcoding:0.17.3
 
 FROM ntodd/ruby-xenial:2.4.0
-MAINTAINER Nate Todd
+LABEL maintainer="Nate Todd"
 
-ENV GEM_VERSION 0.17.2
+ENV GEM_VERSION 0.17.3
 
 RUN set -ex \
   && apt-get update -qq && apt-get install -y --no-install-recommends software-properties-common \
