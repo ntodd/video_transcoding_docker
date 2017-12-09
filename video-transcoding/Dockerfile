@@ -7,7 +7,7 @@ ENV GEM_VERSION 0.18.0
 
 # install build dependencies to compile ffmpeg from master
 RUN set -ex \
-	&& buildDeps=' \
+  && buildDeps=' \
     autoconf \
     automake \
     build-essential \
@@ -48,15 +48,15 @@ RUN set -ex \
     mp4v2-utils \
     mpv \
   ' \
- 	&& apt-get update \
-	&& apt-get install -y --no-install-recommends $buildDeps \
+  && apt-get update \
+  && apt-get install -y --no-install-recommends $buildDeps \
   && mkdir -p /usr/src/ffmpeg/bin \
   && mkdir -p /usr/src/ffmpeg/build \
   && PATH="/usr/src/ffmpeg/bin:$PATH" \
   && cd /usr/src/ffmpeg \
 
   # NASM 2.13.01
- 	&& wget http://www.nasm.us/pub/nasm/releasebuilds/2.13.01/nasm-2.13.01.tar.bz2 \
+  && wget http://www.nasm.us/pub/nasm/releasebuilds/2.13.01/nasm-2.13.01.tar.bz2 \
   && tar xjvf nasm-2.13.01.tar.bz2 \
   && cd nasm-2.13.01 \
   && ./autogen.sh \
@@ -67,17 +67,17 @@ RUN set -ex \
   && rm -rf nasm-2.13.01 \
 
   # libx264 latest
-	&& wget http://download.videolan.org/pub/x264/snapshots/last_x264.tar.bz2 \
-	&& tar xjvf last_x264.tar.bz2 \
+  && wget http://download.videolan.org/pub/x264/snapshots/last_x264.tar.bz2 \
+  && tar xjvf last_x264.tar.bz2 \
   && cd x264-snapshot* \
-	&& PATH="/usr/src/ffmpeg/bin:$PATH" ./configure --prefix="/usr/src/ffmpeg/build" --bindir="/usr/src/ffmpeg/bin" --enable-static --disable-opencl \
-	&& PATH="/usr/src/ffmpeg/bin:$PATH" make -j"$(nproc)" \
+  && PATH="/usr/src/ffmpeg/bin:$PATH" ./configure --prefix="/usr/src/ffmpeg/build" --bindir="/usr/src/ffmpeg/bin" --enable-static --disable-opencl \
+  && PATH="/usr/src/ffmpeg/bin:$PATH" make -j"$(nproc)" \
   && make install \
   && cd /usr/src/ffmpeg \
   && rm -rf x264-snapshot* \
 
   # libfdk-aac master
-	&& wget -O fdk-aac.tar.gz https://github.com/mstorsjo/fdk-aac/tarball/master \
+  && wget -O fdk-aac.tar.gz https://github.com/mstorsjo/fdk-aac/tarball/master \
   && tar xzvf fdk-aac.tar.gz \
   && cd mstorsjo-fdk-aac* \
   && autoreconf -fiv \
@@ -89,10 +89,10 @@ RUN set -ex \
 
   # libx265 2.5
   && wget -O x265.tar.gz https://bitbucket.org/multicoreware/x265/downloads/x265_2.5.tar.gz \
-	&& tar xzvf x265.tar.gz \
+  && tar xzvf x265.tar.gz \
   && cd x265_2.5/build/linux \
   && PATH="/usr/src/ffmpeg/bin:$PATH" cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="/usr/src/ffmpeg/build" -DENABLE_SHARED:bool=off ../../source \
-	&& PATH="/usr/src/ffmpeg/bin:$PATH" make -j"$(nproc)" \
+  && PATH="/usr/src/ffmpeg/bin:$PATH" make -j"$(nproc)" \
   && make install \
   && cd /usr/src/ffmpeg \
   && rm -rf x265 \
@@ -106,7 +106,7 @@ RUN set -ex \
   && rm -rf HandBrake \
 
   # FFmpeg 3.3.5
-	&& wget -O ffmpeg.zip https://github.com/FFmpeg/FFmpeg/archive/n3.3.5.zip \
+  && wget -O ffmpeg.zip https://github.com/FFmpeg/FFmpeg/archive/n3.3.5.zip \
   && unzip ffmpeg.zip \
   && mv FFmpeg* ffmpeg_src \
   && cd ffmpeg_src \
