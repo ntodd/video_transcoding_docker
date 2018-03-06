@@ -87,10 +87,10 @@ RUN set -ex \
   && cd /usr/src/ffmpeg \
   && rm -rf mstorsjo-fdk-aac* \
 
-  # libx265 2.5
-  && wget -O x265.tar.gz https://bitbucket.org/multicoreware/x265/downloads/x265_2.5.tar.gz \
+  # libx265 2.7
+  && wget -O x265.tar.gz https://bitbucket.org/multicoreware/x265/downloads/x265_2.7.tar.gz \
   && tar xzvf x265.tar.gz \
-  && cd x265_2.5/build/linux \
+  && cd x265_2.7/build/linux \
   && PATH="/usr/src/ffmpeg/bin:$PATH" cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="/usr/src/ffmpeg/build" -DENABLE_SHARED:bool=off ../../source \
   && PATH="/usr/src/ffmpeg/bin:$PATH" make -j"$(nproc)" \
   && make install \
