@@ -66,10 +66,9 @@ RUN set -ex \
   && cd /usr/src/ffmpeg \
   && rm -rf nasm-2.13.01 \
 
-  # libx264 latest
-  && wget http://download.videolan.org/pub/x264/snapshots/last_x264.tar.bz2 \
-  && tar xjvf last_x264.tar.bz2 \
-  && cd x264-snapshot* \
+  # libx264 stable
+  && git clone -b stable http://git.videolan.org/git/x264.git x264 \
+  && cd x264 \
   && PATH="/usr/src/ffmpeg/bin:$PATH" ./configure --prefix="/usr/src/ffmpeg/build" --bindir="/usr/src/ffmpeg/bin" --enable-static --disable-opencl \
   && PATH="/usr/src/ffmpeg/bin:$PATH" make -j"$(nproc)" \
   && make install \
