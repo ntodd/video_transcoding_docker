@@ -3,7 +3,7 @@
 FROM ntodd/ruby-xenial:2.4.0
 LABEL maintainer="Nate Todd <nate@pixelauthorityllc.com>"
 
-ENV GEM_VERSION 0.19.0
+ENV GEM_VERSION 0.21.0
 
 # install build dependencies to compile ffmpeg from master
 RUN set -ex \
