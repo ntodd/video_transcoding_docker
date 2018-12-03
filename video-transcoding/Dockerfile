@@ -8,45 +8,45 @@ ENV GEM_VERSION 0.19.0
 # install build dependencies to compile ffmpeg from master
 RUN set -ex \
   && buildDeps=' \
-    autoconf \
-    automake \
-    build-essential \
-    git \
-    libass-dev \
-    libbz2-dev \
-    libfontconfig1-dev \
-    libfreetype6-dev \
-    libfribidi-dev \
-    libharfbuzz-dev \
-    libjansson-dev \
-    libogg-dev \
-    libsamplerate-dev \
-    libtheora-dev \
-    libtool \
-    libvorbis-dev \
-    libxml2-dev \
-    m4 \
-    make \
-    patch \
-    pkg-config \
-    python \
-    tar \
-    libtool-bin \
-    texinfo \
-    wget \
-    zlib1g-dev \
-    yasm \
-    cmake \
-    cmake-curses-gui \
-    mercurial \
-    libmp3lame-dev \
-    libopus-dev \
-    libvpx-dev \
-    libx264-dev \
-    unzip \
-    mkvtoolnix \
-    mp4v2-utils \
-    mpv \
+  autoconf \
+  automake \
+  build-essential \
+  git \
+  libass-dev \
+  libbz2-dev \
+  libfontconfig1-dev \
+  libfreetype6-dev \
+  libfribidi-dev \
+  libharfbuzz-dev \
+  libjansson-dev \
+  libogg-dev \
+  libsamplerate-dev \
+  libtheora-dev \
+  libtool \
+  libvorbis-dev \
+  libxml2-dev \
+  m4 \
+  make \
+  patch \
+  pkg-config \
+  python \
+  tar \
+  libtool-bin \
+  texinfo \
+  wget \
+  zlib1g-dev \
+  yasm \
+  cmake \
+  cmake-curses-gui \
+  mercurial \
+  libmp3lame-dev \
+  libopus-dev \
+  libvpx-dev \
+  libx264-dev \
+  unzip \
+  mkvtoolnix \
+  mp4v2-utils \
+  mpv \
   ' \
   && apt-get update \
   && apt-get install -y --no-install-recommends $buildDeps \
@@ -54,7 +54,6 @@ RUN set -ex \
   && mkdir -p /usr/src/ffmpeg/build \
   && PATH="/usr/src/ffmpeg/bin:$PATH" \
   && cd /usr/src/ffmpeg \
-
   # NASM 2.13.01
   && wget http://www.nasm.us/pub/nasm/releasebuilds/2.13.01/nasm-2.13.01.tar.bz2 \
   && tar xjvf nasm-2.13.01.tar.bz2 \
@@ -65,7 +64,6 @@ RUN set -ex \
   && make install \
   && cd /usr/src/ffmpeg \
   && rm -rf nasm-2.13.01 \
-
   # libx264 stable
   && git clone -b stable http://git.videolan.org/git/x264.git x264 \
   && cd x264 \
@@ -74,7 +72,6 @@ RUN set -ex \
   && make install \
   && cd /usr/src/ffmpeg \
   && rm -rf x264-snapshot* \
-
   # libfdk-aac master
   && wget -O fdk-aac.tar.gz https://github.com/mstorsjo/fdk-aac/tarball/master \
   && tar xzvf fdk-aac.tar.gz \
@@ -85,7 +82,6 @@ RUN set -ex \
   && make install \
   && cd /usr/src/ffmpeg \
   && rm -rf mstorsjo-fdk-aac* \
-
   # libx265 2.7
   && wget -O x265.tar.gz https://bitbucket.org/multicoreware/x265/downloads/x265_2.7.tar.gz \
   && tar xzvf x265.tar.gz \
@@ -95,7 +91,6 @@ RUN set -ex \
   && make install \
   && cd /usr/src/ffmpeg \
   && rm -rf x265 \
-
   # HandbrakeCli master
   && git clone https://github.com/HandBrake/HandBrake.git \
   && cd HandBrake \
@@ -103,31 +98,30 @@ RUN set -ex \
   && cd build && make install \
   && cd /usr/src/ffmpeg \
   && rm -rf HandBrake \
-
   # FFmpeg 3.3.5
   && wget -O ffmpeg.zip https://github.com/FFmpeg/FFmpeg/archive/n3.3.5.zip \
   && unzip ffmpeg.zip \
   && mv FFmpeg* ffmpeg_src \
   && cd ffmpeg_src \
   && PATH="/usr/src/ffmpeg/bin:$PATH" PKG_CONFIG_PATH="/usr/src/ffmpeg/build/lib/pkgconfig" ./configure \
-    --prefix="/usr/src/ffmpeg/build" \
-    --pkg-config-flags="--static" \
-    --extra-cflags="-I/usr/src/ffmpeg/build/include" \
-    --extra-ldflags="-L/usr/src/ffmpeg/build/lib" \
-    --bindir="/usr/src/ffmpeg/bin" \
-    --extra-libs=-lpthread \
-    --enable-gpl \
-    --enable-libass \
-    --enable-libfdk-aac \
-    --enable-libfreetype \
-    --enable-libmp3lame \
-    --enable-libopus \
-    --enable-libtheora \
-    --enable-libvorbis \
-    --enable-libvpx \
-    --enable-libx264 \
-    --enable-libx265 \
-    --enable-nonfree \
+  --prefix="/usr/src/ffmpeg/build" \
+  --pkg-config-flags="--static" \
+  --extra-cflags="-I/usr/src/ffmpeg/build/include" \
+  --extra-ldflags="-L/usr/src/ffmpeg/build/lib" \
+  --bindir="/usr/src/ffmpeg/bin" \
+  --extra-libs=-lpthread \
+  --enable-gpl \
+  --enable-libass \
+  --enable-libfdk-aac \
+  --enable-libfreetype \
+  --enable-libmp3lame \
+  --enable-libopus \
+  --enable-libtheora \
+  --enable-libvorbis \
+  --enable-libvpx \
+  --enable-libx264 \
+  --enable-libx265 \
+  --enable-nonfree \
   && PATH="/usr/src/ffmpeg/bin:$PATH" make -j"$(nproc)" \
   && make install \
   && hash -r \
