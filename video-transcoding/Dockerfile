@@ -3,7 +3,12 @@
 FROM ntodd/ruby-xenial:2.4.0
 LABEL maintainer="Nate Todd <nate@pixelauthorityllc.com>"
 
-ENV GEM_VERSION 0.21.1
+ENV GEM_VERSION 0.22.0
+ENV NASM_VERSION 2.13.01
+ENV FDKAAC_VERSION 0.1.6
+ENV LIBX265_VERSION 2.9
+ENV HANDBRAKE_VERSION 1.1.2
+ENV FFMPEG_VERSION 4.1
 
 # install build dependencies to compile ffmpeg from master
 RUN set -ex \
@@ -54,16 +59,16 @@ RUN set -ex \
   && mkdir -p /usr/src/ffmpeg/build \
   && PATH="/usr/src/ffmpeg/bin:$PATH" \
   && cd /usr/src/ffmpeg \
-  # NASM 2.13.01
-  && wget http://www.nasm.us/pub/nasm/releasebuilds/2.13.01/nasm-2.13.01.tar.bz2 \
-  && tar xjvf nasm-2.13.01.tar.bz2 \
-  && cd nasm-2.13.01 \
+  # NASM
+  && wget http://www.nasm.us/pub/nasm/releasebuilds/$NASM_VERSION/nasm-$NASM_VERSION.tar.bz2 \
+  && tar xjvf nasm-*.tar.bz2 \
+  && cd nasm-* \
   && ./autogen.sh \
   && PATH="/usr/src/ffmpeg/bin:$PATH" ./configure --prefix="/usr/src/ffmpeg/build" --bindir="/usr/src/ffmpeg/bin" \
   && PATH="/usr/src/ffmpeg/bin:$PATH" make -j"$(nproc)" \
   && make install \
   && cd /usr/src/ffmpeg \
-  && rm -rf nasm-2.13.01 \
+  && rm -rf nasm-* \
   # libx264 stable
   && git clone -b stable http://git.videolan.org/git/x264.git x264 \
   && cd x264 \
@@ -72,34 +77,33 @@ RUN set -ex \
   && make install \
   && cd /usr/src/ffmpeg \
   && rm -rf x264-snapshot* \
-  # libfdk-aac master
-  && wget -O fdk-aac.tar.gz https://github.com/mstorsjo/fdk-aac/tarball/master \
-  && tar xzvf fdk-aac.tar.gz \
-  && cd mstorsjo-fdk-aac* \
+  # libfdk-aac
+  && git clone https://github.com/mstorsjo/fdk-aac.git \
+  && cd fdk-aac && git checkout tags/v$FDKAAC_VERSION \
   && autoreconf -fiv \
   && ./configure --prefix="/usr/src/ffmpeg/build" --disable-shared \
   && make -j"$(nproc)" \
   && make install \
   && cd /usr/src/ffmpeg \
   && rm -rf mstorsjo-fdk-aac* \
-  # libx265 2.7
-  && wget -O x265.tar.gz https://bitbucket.org/multicoreware/x265/downloads/x265_2.7.tar.gz \
+  # libx265
+  && wget -O x265.tar.gz https://bitbucket.org/multicoreware/x265/downloads/x265_$LIBX265_VERSION.tar.gz \
   && tar xzvf x265.tar.gz \
-  && cd x265_2.7/build/linux \
+  && cd x265_*/build/linux \
   && PATH="/usr/src/ffmpeg/bin:$PATH" cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="/usr/src/ffmpeg/build" -DENABLE_SHARED:bool=off ../../source \
   && PATH="/usr/src/ffmpeg/bin:$PATH" make -j"$(nproc)" \
   && make install \
   && cd /usr/src/ffmpeg \
   && rm -rf x265 \
-  # HandbrakeCli master
+  # HandbrakeCli
   && git clone https://github.com/HandBrake/HandBrake.git \
-  && cd HandBrake \
+  && cd HandBrake && git checkout tags/$HANDBRAKE_VERSION \
   && ./configure --launch-jobs=$(nproc) --disable-gtk --launch \
   && cd build && make install \
   && cd /usr/src/ffmpeg \
   && rm -rf HandBrake \
-  # FFmpeg 3.3.5
-  && wget -O ffmpeg.zip https://github.com/FFmpeg/FFmpeg/archive/n3.3.5.zip \
+  # FFmpeg
+  && wget -O ffmpeg.zip https://github.com/FFmpeg/FFmpeg/archive/n$FFMPEG_VERSION.zip \
   && unzip ffmpeg.zip \
   && mv FFmpeg* ffmpeg_src \
   && cd ffmpeg_src \
