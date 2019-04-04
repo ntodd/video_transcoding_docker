@@ -3,7 +3,7 @@
 FROM ntodd/ruby-xenial:2.4.0
 LABEL maintainer="Nate Todd <nate@pixelauthorityllc.com>"
 
-ENV GEM_VERSION 0.22.0
+ENV GEM_VERSION 0.25.1
 ENV NASM_VERSION 2.13.01
 ENV FDKAAC_VERSION 0.1.6
 ENV LIBX265_VERSION 2.9
